@@ -57,7 +57,7 @@ const GoalInput = (props) => {
 
 const styles = StyleSheet.create({
   button: {
-    width: "50%",
+    width: "40%",
   },
   addButton: {
     backgroundColor: "blue",
@@ -79,13 +79,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    width: "60%",
+    width: "100%",
     justifyContent: "space-around",
   },
   input: {
     borderColor: "teal",
     height: 40,
-
+    marginLeft: 20,
+    marginRight: 20,
     borderWidth: 1,
     paddingTop: 5,
     paddingBottom: 5,
