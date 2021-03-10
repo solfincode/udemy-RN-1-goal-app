@@ -5,6 +5,8 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Modal,
+  SafeAreaView,
 } from "react-native";
 
 const GoalInput = (props) => {
@@ -13,33 +15,72 @@ const GoalInput = (props) => {
   const inputHandler = (enteredText) => {
     setEnteredGoal(enteredText);
   };
+
+  const addGoalHandler = () => {
+    props.addGoalHandler(enteredGoal);
+    setEnteredGoal("");
+  };
+
   return (
-    <View>
-      <TextInput
-        style={styles.input}
-        placeholder="goal input"
-        onChangeText={inputHandler}
-        value={enteredGoal}
-      />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={props.addGoalHandler.bind(this, enteredGoal)}
-      >
-        <Text style={styles.textWhite}>add</Text>
-      </TouchableOpacity>
-    </View>
+    <Modal visible={props.visible} animationType="slide">
+      <SafeAreaView>
+        <View>
+          <TextInput
+            style={styles.input}
+            placeholder="goal input"
+            onChangeText={inputHandler}
+            value={enteredGoal}
+          />
+          <View style={styles.buttonContainer}>
+            <View style={styles.button}>
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={addGoalHandler}
+              >
+                <Text style={styles.textWhite}>add</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.button}>
+              <TouchableOpacity
+                style={styles.CancelButton}
+                onPress={props.cancelHandler}
+              >
+                <Text style={styles.textWhite}>cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </SafeAreaView>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "teal",
+    width: "50%",
+  },
+  addButton: {
+    backgroundColor: "blue",
     borderRadius: 10,
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 20,
     paddingRight: 20,
     marginTop: 15,
+  },
+  CancelButton: {
+    backgroundColor: "red",
+    borderRadius: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 15,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    width: "60%",
+    justifyContent: "space-around",
   },
   input: {
     borderColor: "teal",

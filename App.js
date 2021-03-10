@@ -5,7 +5,6 @@ import {
   Text,
   View,
   TextInput,
-  Button,
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
@@ -18,6 +17,7 @@ import GoalInput from "./components/GoalInput";
 
 export default function App() {
   const [courseGoals, setCourseGoals] = React.useState([]);
+  const [isAddMode, setisAddMode] = React.useState(false);
 
   //add goal
   const addGoalHandler = (enteredGoal) => {
@@ -25,17 +25,44 @@ export default function App() {
       ...currentGoals,
       { id: Math.random().toString(), value: enteredGoal },
     ]);
+    setisAddMode(false);
+  };
+
+  const onDeleteHandler = (goalID) => {
+    setCourseGoals((currentGoals) => {
+      return currentGoals.filter((goal) => goal.id !== goalID);
+    });
+  };
+
+  const cancelHandler = () => {
+    setisAddMode(false);
   };
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <GoalInput addGoalHandler={addGoalHandler} />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => setisAddMode(true)}
+        >
+          <Text style={styles.textWhite}>add</Text>
+        </TouchableOpacity>
+        <GoalInput
+          visible={isAddMode}
+          addGoalHandler={addGoalHandler}
+          cancelHandler={cancelHandler}
+        />
         <View style={styles.goalListContainer}>
           <Text>Goal List</Text>
           <FlatList
             keyExtractor={(item, index) => item.id}
             data={courseGoals}
-            renderItem={(itemData) => <GoalItem title={itemData.item.value} />}
+            renderItem={(itemData) => (
+              <GoalItem
+                id={itemData.item.id}
+                title={itemData.item.value}
+                onDelete={onDeleteHandler}
+              />
+            )}
             style={styles.goalListContainer}
           ></FlatList>
         </View>
@@ -61,6 +88,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
     flexDirection: "column",
+  },
+  button: {
+    backgroundColor: "teal",
+    borderRadius: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 15,
   },
   box: {
     backgroundColor: "teal",
